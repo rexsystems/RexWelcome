@@ -1,0 +1,175 @@
+[CENTER][SIZE=6][B][COLOR=#FF8C42]RexWelcome[/COLOR][/B][/SIZE]
+[SIZE=4]A powerful welcome message plugin with randomized titles, first-join tracking, and PlaceholderAPI integration.[/SIZE]
+
+[IMG]https://img.shields.io/badge/Minecraft-1.20.4+-green.svg[/IMG] [IMG]https://img.shields.io/badge/Java-21-orange.svg[/IMG] [IMG]https://img.shields.io/badge/License-MIT-blue.svg[/IMG]
+[/CENTER]
+
+[SIZE=5][B][COLOR=#FF8C42]✨ Features[/COLOR][/B][/SIZE]
+
+[LIST]
+[*][B]Randomized Welcome Titles[/B] - Multiple title variations for both first-time and returning players
+[*][B]First-Join Detection[/B] - Different messages and actions for new vs returning players
+[*][B]Join Number Tracking[/B] - Track who was the 1st, 2nd, 3rd player to ever join
+[*][B]First-Join Commands[/B] - Execute custom commands when players join for the first time
+[*][B]Broadcast System[/B] - Announce first-time joins to all online players
+[*][B]PlaceholderAPI Integration[/B] - Custom placeholders for use in other plugins
+[*][B]Advanced Color Support[/B] - Legacy codes, hex colors, and MiniMessage format
+[*][B]Join Sounds[/B] - Customizable sounds when players join
+[*][B]Chat Clearing[/B] - Optional chat clear before welcome messages
+[*][B]Hot Reload[/B] - Reload configuration without restarting
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]📋 Requirements[/COLOR][/B][/SIZE]
+
+[LIST]
+[*][B]Java 21[/B] (Required)
+[*][B]Minecraft 1.20.4+[/B] (Paper recommended, Spigot compatible)
+[*][B]PlaceholderAPI[/B] (Optional, for placeholder support in other plugins)
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]🎮 Commands[/COLOR][/B][/SIZE]
+
+[TABLE]
+[TR][TH]Command[/TH][TH]Aliases[/TH][TH]Description[/TH][TH]Permission[/TH][/TR]
+[TR][TD][FONT=Courier New]/rexwelcome[/FONT][/TD][TD][FONT=Courier New]/rw[/FONT][/TD][TD]Main plugin command[/TD][TD]-[/TD][/TR]
+[TR][TD][FONT=Courier New]/rw reload[/FONT][/TD][TD]-[/TD][TD]Reload configuration[/TD][TD][FONT=Courier New]rexwelcome.reload[/FONT][/TD][/TR]
+[TR][TD][FONT=Courier New]/rw info[/FONT][/TD][TD]-[/TD][TD]Show plugin information[/TD][TD]-[/TD][/TR]
+[TR][TD][FONT=Courier New]/rw help[/FONT][/TD][TD]-[/TD][TD]Show help message[/TD][TD]-[/TD][/TR]
+[/TABLE]
+
+[SIZE=5][B][COLOR=#FF8C42]🔐 Permissions[/COLOR][/B][/SIZE]
+
+[TABLE]
+[TR][TH]Permission[/TH][TH]Description[/TH][TH]Default[/TH][/TR]
+[TR][TD][FONT=Courier New]rexwelcome.reload[/FONT][/TD][TD]Reload plugin configuration[/TD][TD]op[/TD][/TR]
+[/TABLE]
+
+[SIZE=5][B][COLOR=#FF8C42]🏷️ Placeholders[/COLOR][/B][/SIZE]
+
+[B]PlaceholderAPI Placeholders[/B] (use in [B]any plugin[/B] that supports PlaceholderAPI):
+
+[TABLE]
+[TR][TH]Placeholder[/TH][TH]Description[/TH][TH]Example[/TH][/TR]
+[TR][TD][FONT=Courier New]%rexwelcome_playernumber%[/FONT][/TD][TD]Player's join number[/TD][TD]42[/TD][/TR]
+[TR][TD][FONT=Courier New]%rexwelcome_totalplayers%[/FONT][/TD][TD]Total unique players[/TD][TD]150[/TD][/TR]
+[TR][TD][FONT=Courier New]%rexwelcome_player_<N>%[/FONT][/TD][TD]Name of Nth player[/TD][TD]Steve[/TD][/TR]
+[/TABLE]
+
+[B]Internal Placeholders[/B] (use inside RexWelcome's config.yml):
+
+[CODE]%player% - Player's name
+%displayname% - Player's display name
+%prefix% - Plugin prefix
+%online% - Online player count
+%max_players% - Maximum players
+%total_players% - Total unique players
+%joincount% - Alias for %total_players%[/CODE]
+
+[SIZE=5][B][COLOR=#FF8C42]🎨 Color Formats[/COLOR][/B][/SIZE]
+
+RexWelcome supports multiple color formats:
+
+[CODE]# Legacy color codes
+message: "&aGreen &bAqua &cRed &eYellow"
+
+# Hex colors
+message: "&#ff5733Orange text"
+message: "#ff5733This also works"
+
+# MiniMessage format
+message: "<color:#ff5733>Orange</color>"
+message: "<gradient:#ff0000:#00ff00>Gradient text</gradient>"
+message: "<bold><#FFD700>Bold gold text</bold>"[/CODE]
+
+[SIZE=5][B][COLOR=#FF8C42]🎲 Randomized Titles[/COLOR][/B][/SIZE]
+
+RexWelcome can display random titles from a list each time a player joins:
+
+[CODE]returning-player:
+  titles:
+    - title: "&#FFD700WELCOME BACK!"
+      subtitle: "&fWe missed you, &e%player%&f!"
+    - title: "&#FF6B6BYOU'RE BACK!"
+      subtitle: "&7Good to see you again!"
+    - title: "&#00FF7FBACK AGAIN?"
+      subtitle: "&fOf course you are!"
+
+first-join:
+  titles:
+    - title: "&#00BFFF✨ WELCOME!"
+      subtitle: "&fThis is your first time here!"
+    - title: "&#FFD700🌟 FIRST TIME!"
+      subtitle: "&eYou're player #%total_players%!"
+    - title: "&#FF69B4WELCOME NEWBIE!"
+      subtitle: "&fEnjoy your stay!"[/CODE]
+
+[SIZE=5][B][COLOR=#FF8C42]⚙️ First-Join Features[/COLOR][/B][/SIZE]
+
+[B]Execute commands automatically when a player joins for the first time:[/B]
+
+[CODE]first-join:
+  enabled: true
+  commands:
+    - "give %player% diamond 5"
+    - "eco give %player% 1000"
+    - "advancement grant %player% only story/mine_diamond"[/CODE]
+
+[B]Broadcast first-time joins to all players:[/B]
+
+[CODE]broadcast:
+  enabled: true
+  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"[/CODE]
+
+[SIZE=5][B][COLOR=#FF8C42]📦 Installation[/COLOR][/B][/SIZE]
+
+[LIST=1]
+[*]Download [B]RexWelcome.jar[/B] from the [URL='https://github.com/rexsystems/RexWelcome/releases']Releases page[/URL]
+[*]Place the JAR file in your server's [FONT=Courier New]plugins/[/FONT] folder
+[*](Optional) Install [URL='https://www.spigotmc.org/resources/placeholderapi.6245/']PlaceholderAPI[/URL]
+[*]Restart your server
+[*]Edit [FONT=Courier New]plugins/RexWelcome/config.yml[/FONT] to customize
+[*]Use [FONT=Courier New]/rw reload[/FONT] to apply changes without restarting
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]📊 Player Data Storage[/COLOR][/B][/SIZE]
+
+Player data is stored in [FONT=Courier New]plugins/RexWelcome/playerdata.yml[/FONT]:
+
+[CODE]players:
+  550e8400-e29b-41d4-a716-446655440000:
+    join-number: 1
+    name: "Steve"
+    first-join: 1673472000000[/CODE]
+
+This tracks:
+[LIST]
+[*][B]join-number[/B] - Order in which players joined (1st, 2nd, 3rd, etc.)
+[*][B]name[/B] - Player's username
+[*][B]first-join[/B] - Timestamp of first join
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]🔗 Links[/COLOR][/B][/SIZE]
+
+[LIST]
+[*][URL='https://rexsystems.github.io/rexwelcome.html'][B]📖 Full Documentation[/B][/URL]
+[*][URL='https://github.com/rexsystems/RexWelcome'][B]💻 GitHub Repository[/B][/URL]
+[*][URL='https://github.com/rexsystems/RexWelcome/issues'][B]🐛 Bug Reports[/B][/URL]
+[*][URL='https://rexsystems.cc'][B]🌐 Website[/B][/URL]
+[*][URL='https://bstats.org/plugin/bukkit/RexWelcome/29063'][B]📊 bStats[/B][/URL]
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]💬 Support[/COLOR][/B][/SIZE]
+
+Need help? Found a bug? Have a suggestion?
+[LIST]
+[*]Open an issue on [URL='https://github.com/rexsystems/RexWelcome/issues']GitHub[/URL]
+[*]Check the [URL='https://rexsystems.github.io/rexwelcome.html']documentation[/URL]
+[/LIST]
+
+[SIZE=5][B][COLOR=#FF8C42]📈 Statistics[/COLOR][/B][/SIZE]
+
+[CENTER][IMG]https://bstats.org/signatures/bukkit/RexWelcome.svg[/IMG][/CENTER]
+
+[HR][/HR]
+
+[CENTER][SIZE=3][COLOR=#888888]Developed with ❤️ by [B]RexSystems[/B] • Version 1.0.0[/COLOR][/SIZE][/CENTER]

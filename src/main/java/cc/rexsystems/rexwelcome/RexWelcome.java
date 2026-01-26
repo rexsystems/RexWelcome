@@ -4,6 +4,7 @@ import cc.rexsystems.rexwelcome.commands.RexWelcomeCommand;
 import cc.rexsystems.rexwelcome.config.ConfigManager;
 import cc.rexsystems.rexwelcome.data.PlayerDataManager;
 import cc.rexsystems.rexwelcome.listeners.PlayerJoinListener;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +35,10 @@ public class RexWelcome extends JavaPlugin {
             new cc.rexsystems.rexwelcome.placeholder.RexWelcomePlaceholder(this).register();
             getLogger().info("PlaceholderAPI hook registered!");
         }
+
+        // Initialize bStats
+        int pluginId = 29063;
+        new Metrics(this, pluginId);
 
         getLogger().info("RexWelcome has been enabled!");
     }
