@@ -1,0 +1,19 @@
+name: RexWelcome
+version: '${project.version}'
+main: cc.rexsystems.rexwelcome.RexWelcome
+api-version: '1.17'
+authors: [RexSystems]
+description: A simple but powerful welcome message plugin
+website: https://rexsystems.cc
+softdepend: [PlaceholderAPI]
+
+commands:
+  rexwelcome:
+    description: Main command for RexWelcome plugin
+    usage: "/%command% reload"
+    aliases: [rw]
+
+permissions:
+  rexwelcome.reload:
+    description: Allows reloading the plugin configuration
+    default: op

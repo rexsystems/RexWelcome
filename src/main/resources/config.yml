@@ -1,0 +1,135 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                               RexWelcome                                      ║
+# ║                     Advanced Welcome Message Plugin                           ║
+# ║                          by RexSystems.cc                                     ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COLOR FORMAT SUPPORT:
+# - Legacy: &a, &b, &c, &l, &o, etc.
+# - Hex #1: &#a96eee (ampersand + hex)
+# - Hex #2: #a96eee (plain hex)
+# - MiniMessage: <color:#a96eee>, <gradient:#ff0000:#00ff00>, <bold>, <italic>
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# General Messages
+messages:
+  prefix: "&7[&#f75634RexWelcome&7] "
+  no-permission: "%prefix%&cYou don't have permission to use this command."
+  reload-success: "%prefix%&aConfiguration reloaded successfully!"
+  command-not-found: "%prefix%&cCommand not found. Use /rexwelcome help"
+  reload-usage: "%prefix%&fUsage: /%cmd% reload"
+  player-only: "%prefix%&cThis command can only be used by players!"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         RETURNING PLAYER SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+returning-player:
+  # Multiple titles - one will be randomly selected each time!
+  titles:
+    - title: "&#FFD700WELCOME BACK!"
+      subtitle: "&fWe missed you, &e%player%&f!"
+    - title: "&#FF6B6BYOU'RE BACK!"
+      subtitle: "&7Good to see you again, %player%!"
+    - title: "&#00FF7FBACK AGAIN?"
+      subtitle: "&fOf course you are, &a%player%&f!"
+    - title: "&#9370DBLOOK WHO'S HERE!"
+      subtitle: "&d%player% &fhas returned!"
+    - title: "&#FF4500HEY THERE!"
+      subtitle: "&fWelcome back, &6%player%&f!"
+  
+  # Messages sent to returning players
+  messages:
+    - "&7"
+    - "%prefix%&#f75634Welcome back, &f%player%&f!"
+    - "&7• &fOnline Players: &#f75634%online%/%max_players%"
+    - "&7• &fVisit our store: &#f75634store.rexsystems.cc"
+    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         FIRST-TIME PLAYER SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+first-join:
+  enabled: true
+  
+  # Multiple titles for first-time players - randomly selected!
+  titles:
+    - title: "&#00BFFF✨ WELCOME!"
+      subtitle: "&fThis is your first time here!"
+    - title: "&#FF69B4WELCOME NEWBIE!"
+      subtitle: "&fEnjoy your stay, &d%player%&f!"
+    - title: "&#7CFC00HELLO, &f%player%&a!"
+      subtitle: "&fWelcome to our server!"
+    - title: "&#FFD700🌟 FIRST TIME!"
+      subtitle: "&eYou're player #%total_players%!"
+    - title: "&#FF6347GREETINGS!"
+      subtitle: "&fWe hope you enjoy your stay!"
+  
+  # Commands to execute when a player joins for the first time
+  # Placeholders: %player%, %joincount%, %online%, etc.
+  # These run as console commands!
+  commands:
+    - "give %player% diamond 1"
+  
+  # Messages sent to first-time players
+  messages:
+    - "&7"
+    - "%prefix%&#00BFFF✨ Welcome &f%player% &7for the first time!"
+    - "&7• &fYou are player number &#f75634#%total_players%"
+    - "&7• &fVisit our website: &#f75634https://rexsystems.cc"
+    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7• &fRead the rules: &#f75634/rules"
+    - "&7"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                            BROADCAST SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Broadcast when someone joins for the first time
+broadcast:
+  enabled: true
+  message: "%prefix%&#f75634%player% &fhas joined for the first time! &7(Player #&e%joincount%&7)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                            WELCOME SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+welcome-messages:
+  enabled: true
+  
+  # Clear chat before sending welcome messages? (Sends 100 empty lines)
+  clear-chat: true
+
+  # Title settings (applies to both first-join and returning)
+  title:
+    enabled: true
+    fade-in: 10    # Ticks (20 ticks = 1 second)
+    stay: 70       # Ticks
+    fade-out: 20   # Ticks
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                             SOUND SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+sounds:
+  join:
+    enabled: true
+    # Sound names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                           COMMAND SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+commands:
+  rexwelcome:
+    enabled: true
+    command: "rexwelcome"
+    aliases: ["rw"]
+    permission: "rexwelcome.reload"
+    usage: "%prefix%&fUsage: /rexwelcome reload"
