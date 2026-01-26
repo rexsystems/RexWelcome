@@ -44,6 +44,8 @@ A powerful welcome message plugin for Minecraft servers with randomized titles, 
 | Permission | Description | Default |
 |------------|-------------|---------|
 | `rexwelcome.reload` | Reload plugin configuration | op |
+| `rexwelcome.info` | View plugin information | op |
+| `rexwelcome.help` | View help message | op |
 
 ## Placeholders
 

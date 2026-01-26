@@ -17,3 +17,9 @@ permissions:
   rexwelcome.reload:
     description: Allows reloading the plugin configuration
     default: op
+  rexwelcome.info:
+    description: Allows viewing plugin information
+    default: op
+  rexwelcome.help:
+    description: Allows viewing help message
+    default: op

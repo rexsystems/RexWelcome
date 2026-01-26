@@ -59,6 +59,11 @@ public class RexWelcomeCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(CommandSender sender, String label) {
+        if (!sender.hasPermission("rexwelcome.help")) {
+            sender.sendMessage(configManager.getMessage("no-permission"));
+            return;
+        }
+
         sender.sendMessage("");
         sender.sendMessage("§7§m                    §r §6§lRexWelcome §7§m                    ");
         sender.sendMessage("");
@@ -70,6 +75,11 @@ public class RexWelcomeCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendInfo(CommandSender sender) {
+        if (!sender.hasPermission("rexwelcome.info")) {
+            sender.sendMessage(configManager.getMessage("no-permission"));
+            return;
+        }
+
         sender.sendMessage("");
         sender.sendMessage("§7§m                    §r §6§lRexWelcome §7§m                    ");
         sender.sendMessage("");
