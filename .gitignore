@@ -66,6 +66,9 @@ private/
 .devcontainer/
 .trae/
 
+# Docs site (symlink to separate repo)
+docs-site/
+
 # Build artifacts
 *.jar
 !libs/*.jar
