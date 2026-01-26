@@ -13,12 +13,13 @@ A powerful welcome message plugin for Minecraft servers with randomized titles, 
 - **Advanced Color Support** - Legacy codes, hex colors, and MiniMessage format
 - **Join Sounds** - Customizable sounds when players join
 - **Chat Clearing** - Optional chat clear before welcome messages
+- **Folia Support** - Full compatibility with Folia multi-threaded servers
 - **Hot Reload** - Reload configuration without restarting
 
 ## Requirements
 
 - **Java 21** (Required)
-- **Minecraft 1.20.4+** (Paper recommended, Spigot compatible)
+- **Minecraft 1.20.4+** (Paper/Spigot/Folia compatible)
 - **PlaceholderAPI** (Optional, for placeholder support)
 
 ## Installation

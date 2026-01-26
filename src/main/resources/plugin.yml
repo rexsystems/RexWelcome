@@ -2,6 +2,7 @@ name: RexWelcome
 version: '${project.version}'
 main: cc.rexsystems.rexwelcome.RexWelcome
 api-version: '1.17'
+folia-supported: true
 authors: [RexSystems]
 description: A simple but powerful welcome message plugin
 website: https://rexsystems.cc
