@@ -91,8 +91,19 @@ public class PlayerJoinListener implements Listener {
             command = command.replace("%player%", player.getName());
             command = command.replace("%joincount%", String.valueOf(totalPlayers));
             command = ColorUtils.replacePlaceholders(command, player, totalPlayers);
+            
+            // Trim and validate command before execution
+            command = command.trim();
+            if (command.isEmpty()) {
+                continue;
+            }
 
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            try {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to execute first-join command: " + command);
+                plugin.getLogger().warning("Error: " + e.getMessage());
+            }
         }
     }
 
