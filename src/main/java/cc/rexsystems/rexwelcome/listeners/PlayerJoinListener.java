@@ -77,7 +77,10 @@ public class PlayerJoinListener implements Listener {
             String broadcastMsg = configManager.getBroadcastMessage();
             broadcastMsg = broadcastMsg.replace("%prefix%", configManager.getPrefix());
             broadcastMsg = ColorUtils.replacePlaceholders(broadcastMsg, player, totalPlayers);
-            broadcastMsg = ColorUtils.replacePlaceholders(broadcastMsg, player, totalPlayers).replace("%head%", "");
+            broadcastMsg = broadcastMsg.replace("%head%", "");
+            if (plugin.isPlaceholderAPIEnabled()) {
+                broadcastMsg = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, broadcastMsg);
+            }
             broadcastMsg = ColorUtils.colorize(broadcastMsg);
             Bukkit.broadcastMessage(broadcastMsg);
         }
@@ -91,6 +94,9 @@ public class PlayerJoinListener implements Listener {
             command = command.replace("%player%", player.getName());
             command = command.replace("%joincount%", String.valueOf(totalPlayers));
             command = ColorUtils.replacePlaceholders(command, player, totalPlayers);
+            if (plugin.isPlaceholderAPIEnabled()) {
+                command = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, command);
+            }
             
             // Trim and validate command before execution
             command = command.trim();
@@ -163,10 +169,15 @@ public class PlayerJoinListener implements Listener {
         // 2. Replace Placeholders (Player, Online, etc.)
         processed = ColorUtils.replacePlaceholders(processed, player, totalPlayers);
 
-        // 3. Colorize Legacy (& -> §) including Hex
+        // 3. Resolve external PlaceholderAPI placeholders (if PAPI is installed)
+        if (plugin.isPlaceholderAPIEnabled()) {
+            processed = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, processed);
+        }
+
+        // 4. Colorize Legacy (& -> §) including Hex
         processed = ColorUtils.colorize(processed);
 
-        // 4. Return Component (Standard Legacy Deserialization)
+        // 5. Return Component (Standard Legacy Deserialization)
         // This handles standard color codes (§a, §x...) natively supported by Adventure
         return LegacyComponentSerializer.legacySection().deserialize(processed);
     }

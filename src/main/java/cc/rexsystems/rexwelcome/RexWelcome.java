@@ -13,6 +13,7 @@ public class RexWelcome extends JavaPlugin {
     private static RexWelcome instance;
     private ConfigManager configManager;
     private PlayerDataManager playerDataManager;
+    private boolean placeholderAPIEnabled = false;
 
     @Override
     public void onEnable() {
@@ -33,6 +34,7 @@ public class RexWelcome extends JavaPlugin {
         // Register PlaceholderAPI expansion if available
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new cc.rexsystems.rexwelcome.placeholder.RexWelcomePlaceholder(this).register();
+            placeholderAPIEnabled = true;
             getLogger().info("PlaceholderAPI hook registered!");
         }
 
@@ -66,6 +68,10 @@ public class RexWelcome extends JavaPlugin {
 
     public PlayerDataManager getPlayerDataManager() {
         return playerDataManager;
+    }
+
+    public boolean isPlaceholderAPIEnabled() {
+        return placeholderAPIEnabled;
     }
 
 }
