@@ -1,5 +1,7 @@
 package cc.rexsystems.rexwelcome.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class ColorUtils {
 
+    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+
     // Patterns for different color formats
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
     private static final Pattern HEX_PATTERN_PLAIN = Pattern.compile("#([A-Fa-f0-9]{6})");
@@ -17,6 +21,18 @@ public class ColorUtils {
     private static final Pattern MINIMESSAGE_GRADIENT = Pattern.compile("<gradient:([^>]+)>");
     private static final Pattern MINIMESSAGE_RAINBOW = Pattern.compile("<rainbow>");
     private static final Pattern MINIMESSAGE_TAGS = Pattern.compile("<(/?)([a-zA-Z_]+)(?::[^>]+)?>");
+
+    /**
+     * Parse a message into an Adventure Component.
+     * Supports legacy (& / &#hex / #hex) mixed with MiniMessage, including
+     * clickable links: {@code <click:open_url:'https://example.com'>Click here</click>}
+     */
+    public static Component toComponent(String text) {
+        if (text == null || text.isEmpty()) {
+            return Component.empty();
+        }
+        return MINI_MESSAGE.deserialize(legacyToMiniMessage(text));
+    }
 
     /**
      * Colorize a string with support for all color formats:
@@ -276,8 +292,9 @@ public class ColorUtils {
 
         // 1. Handle Hex Colors: &#RRGGBB -> <#RRGGBB>
         text = text.replaceAll("&#([0-9a-fA-F]{6})", "<#$1>");
-        // Handle Plain Hex: #RRGGBB -> <#RRGGBB> (if not preceded by <)
-        text = text.replaceAll("(?<!<)#([0-9a-fA-F]{6})", "<#$1>");
+        // Handle Plain Hex: #RRGGBB -> <#RRGGBB>
+        // Skip when already MiniMessage (<#...) or inside a tag value (:#...)
+        text = text.replaceAll("(?<![<:])#([0-9a-fA-F]{6})", "<#$1>");
 
         // 2. Handle Legacy Colors
         StringBuilder sb = new StringBuilder();

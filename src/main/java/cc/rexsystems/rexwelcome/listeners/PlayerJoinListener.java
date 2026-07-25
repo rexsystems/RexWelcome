@@ -5,7 +5,6 @@ import cc.rexsystems.rexwelcome.config.ConfigManager;
 import cc.rexsystems.rexwelcome.data.PlayerDataManager;
 import cc.rexsystems.rexwelcome.utils.ColorUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -174,12 +173,8 @@ public class PlayerJoinListener implements Listener {
             processed = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, processed);
         }
 
-        // 4. Colorize Legacy (& -> §) including Hex
-        processed = ColorUtils.colorize(processed);
-
-        // 5. Return Component (Standard Legacy Deserialization)
-        // This handles standard color codes (§a, §x...) natively supported by Adventure
-        return LegacyComponentSerializer.legacySection().deserialize(processed);
+        // 4. Parse as MiniMessage (legacy & colors + click/hover tags)
+        return ColorUtils.toComponent(processed);
     }
 
     private void playJoinSound(Player player) {

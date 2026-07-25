@@ -10,6 +10,9 @@
 # - Hex #1: &#a96eee (ampersand + hex)
 # - Hex #2: #a96eee (plain hex)
 # - MiniMessage: <color:#a96eee>, <gradient:#ff0000:#00ff00>, <bold>, <italic>
+# - Clickable links (welcome messages / titles):
+#   <click:open_url:'https://example.com'>Click here</click>
+#   With hover: <click:open_url:'https://example.com'><hover:show_text:'<gray>Open link'><underlined>Click here</underlined></hover></click>
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # General Messages
@@ -44,8 +47,8 @@ returning-player:
     - "&7"
     - "%prefix%&#f75634Welcome back, &f%player%&f!"
     - "&7• &fOnline Players: &#f75634%online%/%max_players%"
-    - "&7• &fVisit our store: &#f75634store.rexsystems.cc"
-    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7• &fVisit our store: <click:open_url:'https://store.rexsystems.cc'><#f75634><underlined>Click here</underlined></click>"
+    - "&7• &fJoin our Discord: <click:open_url:'https://discord.rexsystems.cc'><#f75634><underlined>Click here</underlined></click>"
     - "&7"
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -79,8 +82,8 @@ first-join:
     - "&7"
     - "%prefix%&#00BFFF✨ Welcome &f%player% &7for the first time!"
     - "&7• &fYou are player number &#f75634#%total_players%"
-    - "&7• &fVisit our website: &#f75634https://rexsystems.cc"
-    - "&7• &fJoin our Discord: &#f75634discord.rexsystems.cc"
+    - "&7• &fVisit our website: <click:open_url:'https://rexsystems.cc'><#f75634><underlined>Click here</underlined></click>"
+    - "&7• &fJoin our Discord: <click:open_url:'https://discord.rexsystems.cc'><#f75634><underlined>Click here</underlined></click>"
     - "&7• &fRead the rules: &#f75634/rules"
     - "&7"
 
