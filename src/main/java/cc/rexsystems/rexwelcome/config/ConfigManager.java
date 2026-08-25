@@ -1,7 +1,9 @@
 package cc.rexsystems.rexwelcome.config;
 
 import cc.rexsystems.rexwelcome.RexWelcome;
-import cc.rexsystems.rexwelcome.utils.ColorUtils;
+import cc.rexsystems.rexwelcome.utils.MessageUtils;
+import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -127,9 +129,11 @@ public class ConfigManager {
     }
 
     public String getMessage(String path) {
-        String message = config.getString("messages." + path, "");
-        message = message.replace("%prefix%", prefix);
-        return ColorUtils.colorize(message);
+        return config.getString("messages." + path, "");
+    }
+
+    public Component getMessageComponent(RexWelcome plugin, String path, CommandSender sender) {
+        return MessageUtils.toComponent(plugin, getMessage(path), sender);
     }
 
     public TitleMessage getRandomReturningTitle() {

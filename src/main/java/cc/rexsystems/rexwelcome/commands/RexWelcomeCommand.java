@@ -41,7 +41,7 @@ public class RexWelcomeCommand implements CommandExecutor, TabCompleter {
                 sendInfo(sender);
                 break;
             default:
-                sender.sendMessage(configManager.getMessage("command-not-found"));
+                sender.sendMessage(configManager.getMessageComponent(plugin, "command-not-found", sender));
                 break;
         }
 
@@ -50,17 +50,17 @@ public class RexWelcomeCommand implements CommandExecutor, TabCompleter {
 
     private void handleReload(CommandSender sender) {
         if (!sender.hasPermission("rexwelcome.reload")) {
-            sender.sendMessage(configManager.getMessage("no-permission"));
+            sender.sendMessage(configManager.getMessageComponent(plugin, "no-permission", sender));
             return;
         }
 
         plugin.reload();
-        sender.sendMessage(configManager.getMessage("reload-success"));
+        sender.sendMessage(configManager.getMessageComponent(plugin, "reload-success", sender));
     }
 
     private void sendHelp(CommandSender sender, String label) {
         if (!sender.hasPermission("rexwelcome.help")) {
-            sender.sendMessage(configManager.getMessage("no-permission"));
+            sender.sendMessage(configManager.getMessageComponent(plugin, "no-permission", sender));
             return;
         }
 
@@ -76,7 +76,7 @@ public class RexWelcomeCommand implements CommandExecutor, TabCompleter {
 
     private void sendInfo(CommandSender sender) {
         if (!sender.hasPermission("rexwelcome.info")) {
-            sender.sendMessage(configManager.getMessage("no-permission"));
+            sender.sendMessage(configManager.getMessageComponent(plugin, "no-permission", sender));
             return;
         }
 

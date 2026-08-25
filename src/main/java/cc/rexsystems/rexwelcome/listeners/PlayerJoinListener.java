@@ -3,7 +3,7 @@ package cc.rexsystems.rexwelcome.listeners;
 import cc.rexsystems.rexwelcome.RexWelcome;
 import cc.rexsystems.rexwelcome.config.ConfigManager;
 import cc.rexsystems.rexwelcome.data.PlayerDataManager;
-import cc.rexsystems.rexwelcome.utils.ColorUtils;
+import cc.rexsystems.rexwelcome.utils.MessageUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -74,14 +74,9 @@ public class PlayerJoinListener implements Listener {
         // Broadcast
         if (configManager.isBroadcastEnabled()) {
             String broadcastMsg = configManager.getBroadcastMessage();
-            broadcastMsg = broadcastMsg.replace("%prefix%", configManager.getPrefix());
-            broadcastMsg = ColorUtils.replacePlaceholders(broadcastMsg, player, totalPlayers);
             broadcastMsg = broadcastMsg.replace("%head%", "");
-            if (plugin.isPlaceholderAPIEnabled()) {
-                broadcastMsg = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, broadcastMsg);
-            }
-            broadcastMsg = ColorUtils.colorize(broadcastMsg);
-            Bukkit.broadcastMessage(broadcastMsg);
+            Component component = MessageUtils.toComponent(plugin, broadcastMsg, player, totalPlayers);
+            Bukkit.getServer().broadcast(component);
         }
 
         // Execute first join commands
@@ -90,12 +85,7 @@ public class PlayerJoinListener implements Listener {
             if (command == null || command.trim().isEmpty())
                 continue;
 
-            command = command.replace("%player%", player.getName());
-            command = command.replace("%joincount%", String.valueOf(totalPlayers));
-            command = ColorUtils.replacePlaceholders(command, player, totalPlayers);
-            if (plugin.isPlaceholderAPIEnabled()) {
-                command = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, command);
-            }
+            command = MessageUtils.toPlain(plugin, command, player, totalPlayers);
             
             // Trim and validate command before execution
             command = command.trim();
@@ -162,19 +152,7 @@ public class PlayerJoinListener implements Listener {
     }
 
     private Component createComponent(String text, Player player, int totalPlayers) {
-        // 1. Replace Prefix
-        String processed = text.replace("%prefix%", configManager.getPrefix());
-
-        // 2. Replace Placeholders (Player, Online, etc.)
-        processed = ColorUtils.replacePlaceholders(processed, player, totalPlayers);
-
-        // 3. Resolve external PlaceholderAPI placeholders (if PAPI is installed)
-        if (plugin.isPlaceholderAPIEnabled()) {
-            processed = cc.rexsystems.rexwelcome.placeholder.PlaceholderHook.apply(player, processed);
-        }
-
-        // 4. Parse as MiniMessage (legacy & colors + click/hover tags)
-        return ColorUtils.toComponent(processed);
+        return MessageUtils.toComponent(plugin, text, player, totalPlayers);
     }
 
     private void playJoinSound(Player player) {
