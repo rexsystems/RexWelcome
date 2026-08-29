@@ -15,6 +15,8 @@
 #   With hover: <click:open_url:'https://example.com'><hover:show_text:'<gray>Open link'><underlined>Click here</underlined></hover></click>
 # ═══════════════════════════════════════════════════════════════════════════════
 
+config-version: 2
+
 # General Messages
 messages:
   prefix: "&7[&#f75634RexWelcome&7] "
@@ -105,6 +107,12 @@ welcome-messages:
   
   # Clear chat before sending welcome messages? (Sends 100 empty lines)
   clear-chat: true
+
+  # Delay welcome content after join (titles, messages, broadcast, first-join commands).
+  # Useful when PlaceholderAPI expansions load async (e.g. VotingPlugin showing "..." while loading).
+  delayed-welcome:
+    enabled: false
+    delay-ms: 1000
 
   # Title settings (applies to both first-join and returning)
   title:

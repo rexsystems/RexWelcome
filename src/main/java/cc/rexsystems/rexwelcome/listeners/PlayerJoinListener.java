@@ -4,6 +4,7 @@ import cc.rexsystems.rexwelcome.RexWelcome;
 import cc.rexsystems.rexwelcome.config.ConfigManager;
 import cc.rexsystems.rexwelcome.data.PlayerDataManager;
 import cc.rexsystems.rexwelcome.utils.MessageUtils;
+import cc.rexsystems.rexwelcome.utils.SchedulerUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -52,76 +53,88 @@ public class PlayerJoinListener implements Listener {
         if (!configManager.isFirstJoinEnabled())
             return;
 
-        // Mark player as joined
+        // Mark player as joined immediately (before any delay)
         playerDataManager.markPlayerAsJoined(player.getUniqueId(), player.getName());
-        int totalPlayers = playerDataManager.getTotalPlayers();
 
-        // Clear chat if enabled
-        if (configManager.isClearChatEnabled()) {
-            clearChat(player);
-        }
-
-        // Send title
-        if (configManager.isTitleEnabled()) {
-            ConfigManager.TitleMessage titleMessage = configManager.getRandomFirstJoinTitle();
-            sendTitle(player, titleMessage, totalPlayers);
-        }
-
-        // Send messages to player
-        List<String> messages = configManager.getFirstJoinMessages();
-        sendMessages(player, messages, totalPlayers);
-
-        // Broadcast
-        if (configManager.isBroadcastEnabled()) {
-            String broadcastMsg = configManager.getBroadcastMessage();
-            broadcastMsg = broadcastMsg.replace("%head%", "");
-            Component component = MessageUtils.toComponent(plugin, broadcastMsg, player, totalPlayers);
-            Bukkit.getServer().broadcast(component);
-        }
-
-        // Execute first join commands
-        List<String> commands = configManager.getFirstJoinCommands();
-        for (String command : commands) {
-            if (command == null || command.trim().isEmpty())
-                continue;
-
-            command = MessageUtils.toPlain(plugin, command, player, totalPlayers);
-            
-            // Trim and validate command before execution
-            command = command.trim();
-            if (command.isEmpty()) {
-                continue;
+        scheduleWelcome(player, () -> {
+            if (!player.isOnline()) {
+                return;
             }
 
-            try {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-            } catch (Exception e) {
-                plugin.getLogger().warning("Failed to execute first-join command: " + command);
-                plugin.getLogger().warning("Error: " + e.getMessage());
+            int totalPlayers = playerDataManager.getTotalPlayers();
+
+            if (configManager.isClearChatEnabled()) {
+                clearChat(player);
             }
-        }
+
+            if (configManager.isTitleEnabled()) {
+                ConfigManager.TitleMessage titleMessage = configManager.getRandomFirstJoinTitle();
+                sendTitle(player, titleMessage, totalPlayers);
+            }
+
+            List<String> messages = configManager.getFirstJoinMessages();
+            sendMessages(player, messages, totalPlayers);
+
+            if (configManager.isBroadcastEnabled()) {
+                String broadcastMsg = configManager.getBroadcastMessage();
+                broadcastMsg = broadcastMsg.replace("%head%", "");
+                Component component = MessageUtils.toComponent(plugin, broadcastMsg, player, totalPlayers);
+                Bukkit.getServer().broadcast(component);
+            }
+
+            List<String> commands = configManager.getFirstJoinCommands();
+            for (String command : commands) {
+                if (command == null || command.trim().isEmpty())
+                    continue;
+
+                command = MessageUtils.toPlain(plugin, command, player, totalPlayers);
+
+                command = command.trim();
+                if (command.isEmpty()) {
+                    continue;
+                }
+
+                try {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                } catch (Exception e) {
+                    plugin.getLogger().warning("Failed to execute first-join command: " + command);
+                    plugin.getLogger().warning("Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
     private void handleReturningPlayer(Player player) {
         if (!configManager.isWelcomeEnabled())
             return;
 
-        int totalPlayers = playerDataManager.getTotalPlayers();
+        scheduleWelcome(player, () -> {
+            if (!player.isOnline()) {
+                return;
+            }
 
-        // Clear chat if enabled
-        if (configManager.isClearChatEnabled()) {
-            clearChat(player);
+            int totalPlayers = playerDataManager.getTotalPlayers();
+
+            if (configManager.isClearChatEnabled()) {
+                clearChat(player);
+            }
+
+            if (configManager.isTitleEnabled()) {
+                ConfigManager.TitleMessage titleMessage = configManager.getRandomReturningTitle();
+                sendTitle(player, titleMessage, totalPlayers);
+            }
+
+            List<String> messages = configManager.getReturningMessages();
+            sendMessages(player, messages, totalPlayers);
+        });
+    }
+
+    private void scheduleWelcome(Player player, Runnable task) {
+        if (configManager.isDelayedWelcomeEnabled()) {
+            SchedulerUtils.runDelayed(plugin, player, task, configManager.getDelayedWelcomeDelayMs());
+        } else {
+            task.run();
         }
-
-        // Send title
-        if (configManager.isTitleEnabled()) {
-            ConfigManager.TitleMessage titleMessage = configManager.getRandomReturningTitle();
-            sendTitle(player, titleMessage, totalPlayers);
-        }
-
-        // Send messages to player
-        List<String> messages = configManager.getReturningMessages();
-        sendMessages(player, messages, totalPlayers);
     }
 
     private void clearChat(Player player) {

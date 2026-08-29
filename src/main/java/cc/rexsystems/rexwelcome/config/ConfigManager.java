@@ -35,6 +35,8 @@ public class ConfigManager {
     private int titleFadeIn;
     private int titleStay;
     private int titleFadeOut;
+    private boolean delayedWelcomeEnabled;
+    private long delayedWelcomeDelayMs;
 
     public ConfigManager(RexWelcome plugin) {
         this.plugin = plugin;
@@ -45,6 +47,8 @@ public class ConfigManager {
     public void reload() {
         plugin.reloadConfig();
         config = plugin.getConfig();
+        new ConfigMigrator(plugin).migrate(config);
+        new ConfigAutoUpdater(plugin).ensureDefaults();
         loadConfig();
     }
 
@@ -59,6 +63,8 @@ public class ConfigManager {
         titleFadeIn = config.getInt("welcome-messages.title.fade-in", 10);
         titleStay = config.getInt("welcome-messages.title.stay", 70);
         titleFadeOut = config.getInt("welcome-messages.title.fade-out", 20);
+        delayedWelcomeEnabled = config.getBoolean("welcome-messages.delayed-welcome.enabled", false);
+        delayedWelcomeDelayMs = config.getLong("welcome-messages.delayed-welcome.delay-ms", 1000L);
 
         // Returning player titles
         returningTitles = loadTitles("returning-player.titles");
@@ -208,6 +214,14 @@ public class ConfigManager {
 
     public int getTitleFadeOut() {
         return titleFadeOut;
+    }
+
+    public boolean isDelayedWelcomeEnabled() {
+        return delayedWelcomeEnabled;
+    }
+
+    public long getDelayedWelcomeDelayMs() {
+        return delayedWelcomeDelayMs;
     }
 
     public List<String> getFirstJoinCommands() {
